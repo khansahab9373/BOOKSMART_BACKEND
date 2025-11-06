@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import "./conn/conn.js";
-
+// import paymentRoutes from "./routes/payment.js";
 import User from "./routes/user.js";
 import Books from "./routes/book.js";
 import Favourite from "./routes/favourite.js";
@@ -25,6 +25,7 @@ app.use("/api/v1", Books);
 app.use("/api/v1", Favourite);
 app.use("/api/v1", Cart);
 app.use("/api/v1", Order);
+// app.use("/api/payment", paymentRoutes);
 
 // Creating port
 app.listen(process.env.PORT, () => {
