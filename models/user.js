@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema(
       default:
         "https://cdn.iconscout.com/icon/free/png-512/free-avatar-icon-download-in-svg-png-gif-file-formats--telegram-logo-man-ui-pack-miscellaneous-icons-840229.png?f=webp&w=256 ",
     },
+    avatarPublicId: {
+      type: String,
+      default: null,
+    },
     role: {
       type: String,
       default: "user",
