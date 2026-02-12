@@ -18,7 +18,7 @@ app.use(cors());
 app.use(express.json());
 conn();
 
-// Routes
+
 app.get("/", (req, res) => {
   res.send("Welcome to the Book Store API");
 });
@@ -27,6 +27,7 @@ app.use("/api/v1", Books);
 app.use("/api/v1", Favourite);
 app.use("/api/v1", Cart);
 app.use("/api/v1", Order);
+
 
 app.listen(process.env.PORT, () => {
   console.log(`Server started at port ${process.env.PORT}`);
