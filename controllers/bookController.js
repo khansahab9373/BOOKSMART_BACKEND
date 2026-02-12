@@ -16,6 +16,7 @@ export const addBook = async (req, res) => {
       title: req.body.title,
       author: req.body.author,
       price: req.body.price,
+      discountPrice: req.body.discountPrice,
       desc: req.body.desc,
       language: req.body.language,
     });
@@ -35,6 +36,7 @@ export const updateBook = async (req, res) => {
       title: req.body.title,
       author: req.body.author,
       price: req.body.price,
+      discountPrice: req.body.discountPrice,
       desc: req.body.desc,
       language: req.body.language,
     });
@@ -78,7 +80,7 @@ export const getAllBooks = async (req, res) => {
 // Get Recent Books
 export const getRecentBooks = async (req, res) => {
   try {
-    const books = await Book.find().sort({ createdAt: -1 }).limit(8);
+    const books = await Book.find().sort({ createdAt: -1 }).limit(4);
     return res.json({
       status: "Success",
       data: books,

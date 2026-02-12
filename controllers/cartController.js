@@ -1,32 +1,34 @@
 import User from "../models/user.js";
+import Book from "../models/book.js";
 
 // Add book to cart
 export const addToCart = async (req, res) => {
   try {
     const { bookid, id } = req.headers;
-    const userData = await User.findById(id);
-    if (!userData) {
-      return res.status(404).json({ message: "User not found" });
-    }
 
-    // Check if the book is already in the cart
+    const userData = await User.findById(id);
+    if (!userData)
+      return res.status(404).json({ message: "User not found" });
+
+    const bookExists = await Book.findById(bookid);
+    if (!bookExists)
+      return res.status(404).json({ message: "Book not found" });
+
     const existingItem = userData.cart.find(
-      (item) => item.book.toString() === bookid,
+      (item) => item.book.toString() === bookid
     );
+
     if (existingItem) {
-      // Increment quantity
       existingItem.quantity += 1;
       await userData.save();
-      return res.status(200).json({
+      return res.json({
         status: "Success",
         message: "Book quantity increased",
       });
     }
 
-    // Add the book to the user's cart
-    await User.findByIdAndUpdate(id, {
-      $push: { cart: { book: bookid, quantity: 1 } },
-    });
+    userData.cart.push({ book: bookid, quantity: 1 });
+    await userData.save();
 
     return res.status(201).json({
       status: "Success",
@@ -45,15 +47,20 @@ export const removeFromCart = async (req, res) => {
     const { id } = req.headers;
 
     const userData = await User.findById(id);
+    if (!userData)
+      return res.status(404).json({ message: "User not found" });
+
     const itemIndex = userData.cart.findIndex(
-      (item) => item.book.toString() === bookid,
+      (item) => item.book.toString() === bookid
     );
+
     if (itemIndex !== -1) {
       if (userData.cart[itemIndex].quantity > 1) {
         userData.cart[itemIndex].quantity -= 1;
       } else {
         userData.cart.splice(itemIndex, 1);
       }
+
       await userData.save();
     }
 
@@ -71,8 +78,12 @@ export const removeFromCart = async (req, res) => {
 export const getUserCart = async (req, res) => {
   try {
     const { id } = req.headers;
+
     const userData = await User.findById(id).populate("cart.book");
-    const cart = userData.cart.reverse();
+    if (!userData)
+      return res.status(404).json({ message: "User not found" });
+
+    const cart = [...userData.cart].reverse();
 
     return res.json({
       status: "Success",

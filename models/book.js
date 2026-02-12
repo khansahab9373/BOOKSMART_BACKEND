@@ -4,7 +4,7 @@ const bookSchema = new mongoose.Schema(
   {
     url: {
       type: String,
-      required: true, 
+      required: true,
     },
     title: {
       type: String,
@@ -18,6 +18,10 @@ const bookSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    discountPrice: {
+      type: Number,
+      default: 0,
+    },
     desc: {
       type: String,
       required: true,
@@ -27,7 +31,7 @@ const bookSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default mongoose.model("books", bookSchema);
